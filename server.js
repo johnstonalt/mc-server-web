@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 // players
 const mcsip = "127.0.0.1"
 const mcsport = 25607
-const serverDir = "/home/john/basmati";
+const serverDir = "/home/john/sinkserver";
 const usercache = JSON.parse(fs.readFileSync(`${serverDir}/usercache.json`, "utf8"));
 
 app.get("/api/players", async (req, res) => {
@@ -64,7 +64,8 @@ app.get("/api/players", async (req, res) => {
 
 	var players = [];
 	var rconres = await rcon.send("list");
-	var playerCount = Number(rconres.split("There are ")[1].split(" of a ")[0]);
+	console.log(rconres);
+	var playerCount = Number(rconres.split("There are")[1].split("of a")[0]);
 	if (playerCount == 0) res.json([]);
 
 	rconres = rconres.split("online: ")[1];
@@ -73,9 +74,8 @@ app.get("/api/players", async (req, res) => {
 	} 
 
 	else {
-		for (var i = 0; i < rconres.split(", "); i++) {
-			players.push(rconres.split(", ")[i]);
-		}
+		var playernames = rconres.split(", ");
+		players = playernames;
 	}
 	res.json(players);
 });
@@ -151,14 +151,14 @@ app.get("/api/stats", (req, res) => {
             "playtime": `${playtime} hours`,
             "distance walked": `${Number(distance).toLocaleString()} blocks`,
             "distanced walked while crouched": `${Number(crouchedDistance).toLocaleString()} blocks`,
-            //"mobs killed": Number(totalKilled).toLocaleString(),
+            "mobs killed": Number(totalKilled).toLocaleString(),
             "damage blocked by shield": Number(damageBlockedByShield).toLocaleString(),
-            //"blocked mined": Number(totalMined).toLocaleString(),
+            "blocked mined": Number(totalMined).toLocaleString(),
             "damage dealt": Number(damageDealt).toLocaleString(),
             "damage taken": Number(damageTaken).toLocaleString(),
             "jumps jumped": Number(jumps).toLocaleString(),
             "sleeps": Number(sleeps).toLocaleString(),
-            //"items picked up": Number(totalPickedUp).toLocaleString(),
+            "items picked up": Number(totalPickedUp).toLocaleString(),
             //"uuid": uuid,
         }); 
     });    
