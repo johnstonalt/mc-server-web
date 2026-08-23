@@ -64,7 +64,6 @@ app.get("/api/players", async (req, res) => {
 
 	var players = [];
 	var rconres = await rcon.send("list");
-	console.log(rconres);
 	var playerCount = Number(rconres.split("There are")[1].split("of a")[0]);
 	if (playerCount == 0) res.json([]);
 
@@ -120,7 +119,7 @@ app.get("/api/stats", (req, res) => {
         crouchedDistance = Math.round(crouchedDistance);
 
         var damageBlockedByShield = 0
-	damageBlockedByShield = data["stats"]["minecraft:custom"]["minecraft:damage_blocked_by_shield"];
+		damageBlockedByShield = data["stats"]["minecraft:custom"]["minecraft:damage_blocked_by_shield"];
 
         //var totalMined = 0;
         /*try {var mined = Object.values(data["stats"]["minecraft:mined"]);
@@ -130,10 +129,14 @@ app.get("/api/stats", (req, res) => {
         /*var killed = Object.values(data["stats"]["minecraft:killed"]);
         for (var i = 0 ; i < killed.length; i++) totalKilled += killed[i];*/
 
-        var damageDealt = data["stats"]["minecraft:custom"]["minecraft:damage_dealt"];
-        var damageTaken = data["stats"]["minecraft:custom"]["minecraft:damage_taken"];
+        var damageDealt = 0;
+		damageDealt = data["stats"]["minecraft:custom"]["minecraft:damage_dealt"];
+		
+        var damageTaken = 0;
+        damageTaken = data["stats"]["minecraft:custom"]["minecraft:damage_taken"];
 
-        var jumps = data["stats"]["minecraft:custom"]["minecraft:jump"];
+		var jumps = 0;
+        jumps = data["stats"]["minecraft:custom"]["minecraft:jump"];
 
         var sleeps = 0;
         sleeps = data["stats"]["minecraft:custom"]["minecraft:sleep_in_bed"]
@@ -151,14 +154,14 @@ app.get("/api/stats", (req, res) => {
             "playtime": `${playtime} hours`,
             "distance walked": `${Number(distance).toLocaleString()} blocks`,
             "distanced walked while crouched": `${Number(crouchedDistance).toLocaleString()} blocks`,
-            "mobs killed": Number(totalKilled).toLocaleString(),
+            // "mobs killed": Number(totalKilled).toLocaleString(),
             "damage blocked by shield": Number(damageBlockedByShield).toLocaleString(),
-            "blocked mined": Number(totalMined).toLocaleString(),
+            // "blocked mined": Number(totalMined).toLocaleString(),
             "damage dealt": Number(damageDealt).toLocaleString(),
             "damage taken": Number(damageTaken).toLocaleString(),
             "jumps jumped": Number(jumps).toLocaleString(),
             "sleeps": Number(sleeps).toLocaleString(),
-            "items picked up": Number(totalPickedUp).toLocaleString(),
+            // "items picked up": Number(totalPickedUp).toLocaleString(),
             //"uuid": uuid,
         }); 
     });    
